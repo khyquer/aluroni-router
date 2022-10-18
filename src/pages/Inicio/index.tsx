@@ -3,11 +3,20 @@ import styles from './Inicio.module.scss';
 import stylesTema from 'styles/Tema.module.scss';
 import nossaCasa from 'assets/nossa_casa.png';
 import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { Prato } from 'types/Prato';
 
 export default function Inicio() {
-  let pratosRecomendados = [...cardapio];
-  pratosRecomendados = pratosRecomendados.sort(() => 0.5 - Math.random()).splice(0, 3);
+  const localizacao = useLocation();
+  
+  const [pratosRecomendados, setPratosRecomendados] = useState([...cardapio]);
+  
+  useEffect(() => {
+		setPratosRecomendados(
+			pratosRecomendados.sort(() => (Math.random() > 0.5 ? 0 : -1)
+			).splice(0, 3));
+	}, [localizacao]);
+  
   const navigate = useNavigate();
 
   function redirecionarParaDetalhes(prato: Prato) {
